@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Soal Asas Keamanan Jaringan Dasar</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#14213d;--mute:#5b6577;--line:#d9dee7;--acc:#0b6e6e;--ok:#1b7f3b;--bad:#b3261e;--okbg:#e6f4ea;--badbg:#fdecea}
+@media (prefers-color-scheme:dark){:root{--bg:#10151f;--card:#1a2130;--ink:#e8ecf3;--mute:#9aa6ba;--line:#2e384c;--acc:#4fc3c3;--ok:#6fd38b;--bad:#ff8a80;--okbg:#17301f;--badbg:#3a1c1a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Georgia,"Times New Roman",serif}
+.wrap{max-width:760px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.7rem;margin:0 0 4px}
+h2{font-size:1.25rem;margin:40px 0 4px;border-bottom:2px solid var(--acc);padding-bottom:6px}
+.sub,.petunjuk{color:var(--mute);font-size:.95rem}
+.id{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
+.id label{flex:1 1 200px;font-size:.9rem;color:var(--mute)}
+.id input{width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);font:inherit}
+.q{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:14px 0}
+.q p{margin:0 0 8px;font-weight:bold}
+.opt{display:block;padding:6px 10px;border-radius:6px;cursor:pointer;border:1px solid transparent}
+.opt:hover{background:var(--bg)}
+.opt input{margin-right:8px}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--bad)}
+textarea{width:100%;min-height:110px;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);font:inherit;resize:vertical}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+button{padding:10px 18px;border-radius:6px;border:1px solid var(--acc);background:var(--acc);color:#fff;font:inherit;cursor:pointer}
+button.sec{background:transparent;color:var(--acc)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+#hasil{margin-top:16px;padding:14px 16px;border-radius:8px;background:var(--okbg);border:1px solid var(--ok);display:none}
+.key{display:none;margin-top:10px;font-size:.92rem;color:var(--mute)}
+.show .key{display:block}
+.pedoman{display:none;font-size:.92rem;color:var(--mute);margin-top:6px}
+.show .pedoman{display:block}
+@media print{.btns,#hasil{display:none}body{background:#fff}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+<h1>Soal Asas Keamanan Jaringan Dasar</h1>
+<div class="sub">30 pilihan ganda (@2 poin = 60) dan 5 esai (@8 poin = 40). Total 100 poin.</div>
+<div class="id">
+<label>Nama<input type="text" placeholder="Nama lengkap"></label>
+<label>Kelas<input type="text" placeholder="Contoh: XI TKJ 1"></label>
+</div>
+
+<h2>A. Pilihan Ganda</h2>
+<div class="petunjuk">Pilih satu jawaban yang paling tepat.</div>
+<div id="pg"></div>
+
+<h2>B. Esai</h2>
+<div class="petunjuk">Jawablah dengan kalimat sendiri secara jelas dan runtut.</div>
+<div id="esai"></div>
+
+<div class="btns">
+<button type="button" id="cek">Periksa jawaban pilihan ganda</button>
+<button type="button" class="sec" id="reset">Ulangi</button>
+<button type="button" class="sec" id="print">Cetak</button>
+</div>
+<div id="hasil" role="status"></div>
+</div>
+
+<script>
+// Format: [pertanyaan, [opsi A,B,C,D], indeks jawaban benar (0=A)]
+var PG=[
+["Tiga komponen utama dalam asas keamanan informasi (CIA triad) adalah ...",["Control, Integrity, Access","Confidentiality, Integrity, Availability","Cryptography, Identity, Authorization","Confidentiality, Identification, Authentication"],1],
+["Asas yang memastikan informasi hanya dapat diakses oleh pihak yang berwenang disebut ...",["Integritas","Ketersediaan","Kerahasiaan","Otentikasi"],2],
+["Asas integritas bertujuan untuk ...",["Menyembunyikan data dari publik","Menjaga data tetap akurat dan tidak diubah tanpa izin","Menjamin server selalu menyala","Mempercepat transfer data"],1],
+["Layanan jaringan yang selalu dapat diakses saat dibutuhkan oleh pengguna sah merupakan penerapan asas ...",["Kerahasiaan","Integritas","Non-repudiation","Ketersediaan"],3],
+["Serangan yang membanjiri server dengan lalu lintas hingga layanan tidak dapat diakses disebut ...",["Phishing","DoS/DDoS","Sniffing","Spoofing"],1],
+["Penipuan dengan email atau situs palsu untuk mencuri data pengguna disebut ...",["Phishing","Ransomware","Brute force","Defacement"],0],
+["Malware yang mengenkripsi data korban dan meminta tebusan adalah ...",["Spyware","Worm","Adware","Ransomware"],3],
+["Program berbahaya yang menyamar sebagai perangkat lunak yang sah disebut ...",["Trojan horse","Worm","Rootkit","Keylogger"],0],
+["Fungsi utama firewall adalah ...",["Mempercepat koneksi internet","Menyaring lalu lintas jaringan berdasarkan aturan","Menyimpan cadangan data","Menghapus virus secara otomatis"],1],
+["Sistem yang bertugas mendeteksi aktivitas mencurigakan dan memberi peringatan disebut ...",["Proxy","VPN","IDS","DHCP"],2],
+["Perbedaan IPS dibanding IDS adalah IPS mampu ...",["Hanya mencatat log","Memblokir serangan secara aktif","Mengenkripsi paket","Membagi alamat IP"],1],
+["VPN (Virtual Private Network) bekerja dengan cara ...",["Membuat terowongan terenkripsi melalui jaringan publik","Menghapus semua cookie","Menambah bandwidth","Mengubah nama domain"],0],
+["Proses mengubah plaintext menjadi ciphertext disebut ...",["Dekripsi","Hashing","Enkripsi","Kompresi"],2],
+["Pada enkripsi simetris, ...",["Kunci publik dan privat berbeda","Kunci yang sama dipakai untuk enkripsi dan dekripsi","Tidak memerlukan kunci","Hanya menggunakan hash"],1],
+["Berikut yang termasuk algoritma kriptografi asimetris adalah ...",["AES","DES","RSA","RC4"],2],
+["Ciri fungsi hash seperti SHA-256 adalah ...",["Dapat dibalik ke data asli","Menghasilkan keluaran dengan panjang tetap dan bersifat satu arah","Memakai dua kunci","Hanya untuk file gambar"],1],
+["Multi-Factor Authentication (MFA) adalah otentikasi yang memakai ...",["Satu kata sandi panjang","Dua atau lebih faktor verifikasi","Hanya sidik jari","Hanya nama pengguna"],1],
+["Kata sandi yang kuat sebaiknya ...",["Memakai tanggal lahir","Sama untuk semua akun","Panjang dan memadukan huruf, angka, dan simbol","Berupa kata di kamus"],2],
+["HTTPS secara bawaan menggunakan port ...",["80","21","25","443"],3],
+["Protokol untuk akses remote yang aman (terenkripsi) adalah ...",["Telnet","SSH","FTP","TFTP"],1],
+["Standar keamanan Wi-Fi yang paling baik dari pilihan berikut adalah ...",["WEP","Jaringan terbuka","SSID disembunyikan","WPA3"],3],
+["Manipulasi psikologis untuk membuat orang membocorkan informasi disebut ...",["Social engineering","Port scanning","Buffer overflow","Patching"],0],
+["Penyerang yang menyadap dan dapat mengubah komunikasi antara dua pihak melakukan serangan ...",["Brute force","Man-in-the-Middle","SQL injection","Zero-day"],1],
+["Menyisipkan perintah SQL melalui kolom input aplikasi web disebut ...",["XSS","Phishing","SQL injection","Spoofing"],2],
+["Memasang patch dan pembaruan sistem secara rutin berguna untuk ...",["Menambah ruang disk","Menutup celah keamanan yang diketahui","Mengganti perangkat keras","Mengubah alamat IP"],1],
+["DMZ (Demilitarized Zone) pada jaringan berfungsi sebagai ...",["Tempat penyimpanan cadangan","Zona penyangga bagi server publik antara internet dan jaringan internal","Pengganti firewall","Jaringan khusus nirkabel"],1],
+["Prinsip least privilege berarti pengguna diberi hak akses ...",["Penuh agar mudah bekerja","Sama seperti administrator","Hanya sebatas yang diperlukan untuk tugasnya","Tanpa batas waktu"],2],
+["Tujuan utama melakukan backup data secara berkala adalah ...",["Menghilangkan virus","Memulihkan data saat terjadi kehilangan atau serangan","Mempercepat komputer","Menyembunyikan data"],1],
+["Tanda tangan digital memberikan jaminan ...",["Kecepatan unduh","Keaslian pengirim dan integritas data","Anonimitas penuh","Ukuran file lebih kecil"],1],
+["Alat yang umum dipakai untuk memindai host dan port terbuka pada jaringan adalah ...",["Photoshop","Nmap","Notepad","WinRAR"],1]
+];
+
+var ESAI=[
+["Jelaskan pengertian tiga asas keamanan informasi (Confidentiality, Integrity, Availability) beserta satu contoh penerapan masing-masing dalam jaringan komputer.",
+"Kerahasiaan: hanya pihak berwenang yang dapat mengakses data (contoh: enkripsi, kata sandi). Integritas: data tidak berubah tanpa izin (contoh: hash, tanda tangan digital). Ketersediaan: layanan dapat diakses saat dibutuhkan (contoh: backup, redundansi, perlindungan DDoS). Skor: 2 per asas + 2 untuk kejelasan."],
+["Jelaskan perbedaan enkripsi simetris dan asimetris, serta berikan masing-masing satu contoh algoritma.",
+"Simetris: satu kunci yang sama untuk enkripsi dan dekripsi, cepat, tantangannya distribusi kunci (AES, DES). Asimetris: sepasang kunci publik dan privat, lebih lambat namun distribusi kunci lebih aman (RSA, ECC). Skor: 3 simetris, 3 asimetris, 2 contoh."],
+["Jelaskan perbedaan fungsi firewall, IDS, dan IPS dalam mengamankan jaringan.",
+"Firewall menyaring lalu lintas berdasarkan aturan (izinkan/blokir). IDS mendeteksi aktivitas mencurigakan dan memberi peringatan (pasif). IPS mendeteksi sekaligus memblokir serangan secara aktif (inline). Skor: 3, 2.5, 2.5."],
+["Apa yang dimaksud dengan phishing? Sebutkan empat cara untuk mencegahnya.",
+"Phishing: penipuan yang menyamar sebagai pihak tepercaya melalui email, pesan, atau situs palsu untuk mencuri data. Pencegahan (contoh): periksa alamat pengirim dan URL, jangan klik tautan/lampiran mencurigakan, aktifkan MFA, gunakan filter email/antiphishing, edukasi pengguna. Skor: 4 definisi, 1 per cara pencegahan."],
+["Sebutkan dan jelaskan lima langkah untuk mengamankan jaringan Wi-Fi di rumah atau sekolah.",
+"Contoh: gunakan WPA2/WPA3, ganti sandi bawaan router dan sandi admin, gunakan sandi Wi-Fi yang kuat, perbarui firmware router, nonaktifkan WPS, filter MAC/pisahkan jaringan tamu. Skor: 1,6 per langkah beserta penjelasannya."]
+];
+
+var pg=document.getElementById("pg"),es=document.getElementById("esai"),hasil=document.getElementById("hasil");
+var L=["A","B","C","D"];
+PG.forEach(function(q,i){
+ var d=document.createElement("div");d.className="q";d.id="q"+i;
+ var h="<p>"+(i+1)+". "+q[0]+"</p>";
+ q[1].forEach(function(o,j){h+='<label class="opt"><input type="radio" name="q'+i+'" value="'+j+'">'+L[j]+". "+o+"</label>";});
+ d.innerHTML=h;pg.appendChild(d);
+});
+ESAI.forEach(function(e,i){
+ var d=document.createElement("div");d.className="q";
+ d.innerHTML="<p>"+(31+i)+". "+e[0]+'</p><textarea aria-label="Jawaban esai '+(i+1)+'"></textarea><div class="pedoman"><b>Pedoman jawaban:</b> '+e[1]+"</div>";
+ es.appendChild(d);
+});
+
+document.getElementById("cek").onclick=function(){
+ var benar=0;
+ PG.forEach(function(q,i){
+  var box=document.getElementById("q"+i),opts=box.querySelectorAll(".opt"),pilih=box.querySelector("input:checked");
+  opts.forEach(function(o){o.classList.remove("ok","bad");});
+  opts[q[2]].classList.add("ok");
+  if(pilih){ if(+pilih.value===q[2]){benar++;} else {opts[+pilih.value].classList.add("bad");} }
+ });
+ document.getElementById("app").classList.add("show");
+ hasil.style.display="block";
+ hasil.innerHTML="Benar: <b>"+benar+"</b> dari 30. Skor pilihan ganda: <b>"+(benar*2)+"</b>/60. Skor esai (maks. 40) dinilai guru memakai pedoman jawaban di bawah tiap soal esai.";
+ hasil.scrollIntoView({behavior:"smooth",block:"nearest"});
+};
+document.getElementById("reset").onclick=function(){
+ document.querySelectorAll("input[type=radio]").forEach(function(r){r.checked=false;});
+ document.querySelectorAll("textarea").forEach(function(t){t.value="";});
+ document.querySelectorAll(".opt").forEach(function(o){o.classList.remove("ok","bad");});
+ document.getElementById("app").classList.remove("show");
+ hasil.style.display="none";
+ window.scrollTo({top:0,behavior:"smooth"});
+};
+document.getElementById("print").onclick=function(){window.print();};
+</script>
+</body>
+</html>
