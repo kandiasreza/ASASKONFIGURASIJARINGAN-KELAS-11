@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Soal Konfigurasi Jaringan Dasar</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#14213d;--mute:#5b6577;--line:#d9dee7;--acc:#0b6e6e;--ok:#1b7f3b;--bad:#b3261e;--okbg:#e6f4ea;--badbg:#fdecea}
+@media (prefers-color-scheme:dark){:root{--bg:#10151f;--card:#1a2130;--ink:#e8ecf3;--mute:#9aa6ba;--line:#2e384c;--acc:#4fc3c3;--ok:#6fd38b;--bad:#ff8a80;--okbg:#17301f;--badbg:#3a1c1a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Georgia,"Times New Roman",serif}
+.wrap{max-width:760px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.7rem;margin:0 0 4px}
+h2{font-size:1.25rem;margin:40px 0 4px;border-bottom:2px solid var(--acc);padding-bottom:6px}
+.sub,.petunjuk{color:var(--mute);font-size:.95rem}
+.id{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
+.id label{flex:1 1 200px;font-size:.9rem;color:var(--mute)}
+.id input{width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);font:inherit}
+.q{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:14px 0}
+.q p{margin:0 0 8px;font-weight:bold}
+.opt{display:block;padding:6px 10px;border-radius:6px;cursor:pointer;border:1px solid transparent}
+.opt:hover{background:var(--bg)}
+.opt input{margin-right:8px}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--bad)}
+textarea{width:100%;min-height:110px;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);font:inherit;resize:vertical}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+button{padding:10px 18px;border-radius:6px;border:1px solid var(--acc);background:var(--acc);color:#fff;font:inherit;cursor:pointer}
+button.sec{background:transparent;color:var(--acc)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+#hasil{margin-top:16px;padding:14px 16px;border-radius:8px;background:var(--okbg);border:1px solid var(--ok);display:none}
+.key{display:none;margin-top:10px;font-size:.92rem;color:var(--mute)}
+.show .key{display:block}
+.pedoman{display:none;font-size:.92rem;color:var(--mute);margin-top:6px}
+.show .pedoman{display:block}
+#laporan{display:none}
+#laporan table{width:100%;border-collapse:collapse;margin-top:16px}
+#laporan td{padding:10px 12px;border:1px solid var(--line)}
+#laporan td:first-child{width:45%;color:var(--mute)}
+#laporan .total td{font-weight:bold;font-size:1.2rem}
+@media print{
+body{background:#fff;color:#000}
+.wrap>*:not(#laporan){display:none!important}
+#laporan{display:block}
+#laporan td{border-color:#999;color:#000}
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+<h1>Soal Konfigurasi Jaringan Dasar</h1>
+<div class="sub">30 pilihan ganda (@2 poin = 60) dan 5 esai (@8 poin = 40). Total 100 poin.</div>
+<div class="id">
+<label>Nama<input type="text" id="nama" placeholder="Nama lengkap"></label>
+<label>Kelas<input type="text" id="kelas" placeholder="Contoh: XI TKJ 1"></label>
+<label>Nilai esai (0-40, diisi guru)<input type="number" id="nesai" min="0" max="40"></label>
+</div>
+
+<h2>A. Pilihan Ganda</h2>
+<div class="petunjuk">Pilih satu jawaban yang paling tepat.</div>
+<div id="pg"></div>
+
+<h2>B. Esai</h2>
+<div class="petunjuk">Jawablah dengan kalimat sendiri secara jelas dan runtut.</div>
+<div id="esai"></div>
+
+<div class="btns">
+<button type="button" id="cek">Periksa jawaban pilihan ganda</button>
+<button type="button" class="sec" id="reset">Ulangi</button>
+<button type="button" class="sec" id="print">Cetak</button>
+</div>
+<div id="hasil" role="status"></div>
+<div id="laporan">
+<h1>Lembar Nilai</h1>
+<div class="sub">Soal Konfigurasi Jaringan Dasar</div>
+<table id="tabel"></table>
+</div>
+</div>
+
+<script>
+// Format: [pertanyaan, [opsi A,B,C,D], indeks jawaban benar (0=A)]
+var PG=[
+["Alamat IP versi 4 (IPv4) terdiri dari ... bit.", ["8", "16", "32", "128"], 2],
+["Berikut yang termasuk alamat IP privat adalah ...", ["8.8.8.8", "192.168.1.10", "11.0.0.1", "200.10.5.1"], 1],
+["Subnet mask default untuk IP kelas C adalah ...", ["255.0.0.0", "255.255.0.0", "255.255.255.128", "255.255.255.0"], 3],
+["Fungsi subnet mask adalah ...", ["Membedakan bagian network dan bagian host pada alamat IP", "Menerjemahkan nama domain", "Memberi alamat IP otomatis", "Mengenkripsi paket data"], 0],
+["Default gateway berfungsi sebagai ...", ["Penyimpan alamat MAC", "Penerjemah nama domain", "Pintu keluar menuju jaringan lain atau internet", "Pembagi bandwidth"], 2],
+["DNS (Domain Name System) berfungsi untuk ...", ["Memberi IP otomatis ke klien", "Menerjemahkan nama domain menjadi alamat IP", "Menyaring paket berbahaya", "Menghubungkan dua switch"], 1],
+["Layanan yang membagikan alamat IP secara otomatis kepada klien adalah ...", ["DNS", "FTP", "SMTP", "DHCP"], 3],
+["Alamat loopback untuk menguji kartu jaringan sendiri adalah ...", ["127.0.0.1", "192.168.0.1", "10.0.0.1", "255.255.255.255"], 0],
+["Perintah pada Windows untuk melihat konfigurasi IP komputer adalah ...", ["dir", "ipconfig", "chkdsk", "format"], 1],
+["Perintah untuk menguji konektivitas antar perangkat jaringan adalah ...", ["ipconfig", "hostname", "ping", "cls"], 2],
+["Perintah tracert digunakan untuk ...", ["Melihat alamat MAC", "Menelusuri rute paket menuju tujuan", "Mengganti alamat IP", "Menghapus cache DNS"], 1],
+["Kabel UTP straight umumnya digunakan untuk menghubungkan ...", ["Perangkat yang berbeda jenis, misalnya PC ke switch", "Dua PC secara langsung", "Dua router secara langsung", "Dua access point"], 0],
+["Kabel UTP crossover umumnya digunakan untuk menghubungkan ...", ["PC ke switch", "Router ke modem", "Dua perangkat sejenis, misalnya PC ke PC", "Switch ke hub saja"], 2],
+["Konektor yang dipasang pada ujung kabel UTP adalah ...", ["BNC", "RJ-11", "USB", "RJ-45"], 3],
+["Urutan warna kabel standar T568B dari pin 1 sampai 8 adalah ...", ["Putih-hijau, hijau, putih-oranye, biru, putih-biru, oranye, putih-coklat, coklat", "Putih-oranye, oranye, putih-hijau, biru, putih-biru, hijau, putih-coklat, coklat", "Putih-biru, biru, putih-oranye, hijau, putih-hijau, oranye, putih-coklat, coklat", "Putih-coklat, coklat, putih-oranye, oranye, putih-hijau, hijau, putih-biru, biru"], 1],
+["Switch bekerja terutama pada lapisan OSI ...", ["Physical", "Data Link", "Transport", "Application"], 1],
+["Router bekerja pada lapisan Network dan berfungsi untuk ...", ["Menguatkan sinyal listrik", "Memperbanyak port saja", "Menghubungkan dan meneruskan paket antar jaringan", "Menyimpan halaman web"], 2],
+["Perbedaan hub dibanding switch adalah hub ...", ["Mengirim data ke semua port", "Hanya mengirim ke port tujuan", "Bekerja pada lapisan 3", "Memakai alamat IP untuk meneruskan"], 0],
+["Alamat MAC memiliki panjang ... bit.", ["32", "64", "128", "48"], 3],
+["Pada topologi star, perangkat ...", ["Tersambung berurutan dalam satu kabel", "Tersambung ke satu titik pusat seperti switch", "Tersambung membentuk lingkaran tertutup", "Tersambung tanpa perangkat penghubung"], 1],
+["Notasi CIDR /24 setara dengan subnet mask ...", ["255.255.0.0", "255.255.255.128", "255.255.255.0", "255.255.255.192"], 2],
+["Jumlah alamat host yang valid pada jaringan /24 adalah ...", ["256", "254", "255", "253"], 1],
+["Alamat broadcast untuk jaringan 192.168.1.0/24 adalah ...", ["192.168.1.0", "192.168.1.1", "192.168.1.254", "192.168.1.255"], 3],
+["Alamat network dari host 192.168.10.45/24 adalah ...", ["192.168.10.0", "192.168.10.1", "192.168.10.45", "192.168.10.255"], 0],
+["NAT (Network Address Translation) berfungsi untuk ...", ["Mengenkripsi seluruh trafik", "Memberi nama domain pada IP", "Menerjemahkan alamat IP privat ke alamat IP publik", "Membagi jaringan menjadi VLAN"], 2],
+["Layanan DNS secara umum menggunakan port ...", ["25", "53", "110", "143"], 1],
+["VLAN digunakan untuk ...", ["Memisahkan jaringan secara logis dalam satu switch fisik", "Menambah panjang kabel", "Menggantikan fungsi DNS", "Menguatkan sinyal Wi-Fi"], 0],
+["Access Point berfungsi untuk ...", ["Menerjemahkan domain", "Memberi IP statis", "Menyediakan sambungan nirkabel (Wi-Fi) ke jaringan kabel", "Memutus koneksi klien"], 2],
+["Jumlah lapisan pada model OSI adalah ...", ["4", "5", "6", "7"], 3],
+["IP statis adalah alamat IP yang ...", ["Diberikan otomatis dan berubah-ubah", "Diatur manual dan tetap", "Hanya ada pada jaringan publik", "Hanya dipakai pada Wi-Fi"], 1]
+];
+
+var ESAI=[
+["Jelaskan perbedaan IP address statis dan dinamis (DHCP), beserta satu kelebihan dan satu kekurangan masing-masing.", "Statis: diatur manual dan tetap; kelebihan stabil untuk server/printer, kekurangan rawan konflik dan repot dikelola. Dinamis: diberikan otomatis oleh DHCP server; kelebihan mudah dan praktis, kekurangan alamat bisa berubah. Skor: 2 tiap definisi, 1 tiap kelebihan/kekurangan."],
+["Jelaskan fungsi router, switch, dan access point dalam sebuah jaringan.", "Router: menghubungkan antar jaringan dan meneruskan paket berdasarkan IP. Switch: menghubungkan perangkat dalam satu jaringan lokal dan meneruskan frame berdasarkan MAC. Access point: menyediakan akses nirkabel ke jaringan kabel. Skor: 3, 3, 2."],
+["Diketahui host 192.168.5.130/26. Tentukan subnet mask, network address, broadcast address, rentang host valid, dan jumlah host.", "Mask 255.255.255.192; network 192.168.5.128; broadcast 192.168.5.191; host 192.168.5.129 - 192.168.5.190; jumlah host 62. Skor: 1,6 per jawaban benar."],
+["Jelaskan langkah mengatur IP statis pada komputer (Windows atau Linux) dan cara menguji koneksinya.", "Contoh Windows: Control Panel > Network and Sharing Center > Change adapter settings > Properties Ethernet/Wi-Fi > IPv4 > isi IP address, subnet mask, gateway, DNS > OK. Uji dengan ipconfig dan ping ke gateway lalu ke internet. Skor: 6 langkah konfigurasi, 2 pengujian."],
+["Sebuah komputer tidak dapat mengakses internet. Sebutkan lima langkah pemeriksaan (troubleshooting) secara berurutan.", "Contoh: cek kabel/Wi-Fi dan lampu indikator, cek konfigurasi IP dengan ipconfig, ping 127.0.0.1, ping gateway, ping IP publik (mis. 8.8.8.8) lalu nama domain untuk menguji DNS, periksa router/modem dan firewall. Skor: 1,6 per langkah beserta alasan."]
+];
+
+var pg=document.getElementById("pg"),es=document.getElementById("esai"),hasil=document.getElementById("hasil");
+var L=["A","B","C","D"];
+PG.forEach(function(q,i){
+ var d=document.createElement("div");d.className="q";d.id="q"+i;
+ var h="<p>"+(i+1)+". "+q[0]+"</p>";
+ q[1].forEach(function(o,j){h+='<label class="opt"><input type="radio" name="q'+i+'" value="'+j+'">'+L[j]+". "+o+"</label>";});
+ d.innerHTML=h;pg.appendChild(d);
+});
+ESAI.forEach(function(e,i){
+ var d=document.createElement("div");d.className="q";
+ d.innerHTML="<p>"+(31+i)+". "+e[0]+'</p><textarea aria-label="Jawaban esai '+(i+1)+'"></textarea><div class="pedoman"><b>Pedoman jawaban:</b> '+e[1]+"</div>";
+ es.appendChild(d);
+});
+
+function periksa(){
+ var benar=0;
+ PG.forEach(function(q,i){
+  var box=document.getElementById("q"+i),opts=box.querySelectorAll(".opt"),pilih=box.querySelector("input:checked");
+  opts.forEach(function(o){o.classList.remove("ok","bad");});
+  opts[q[2]].classList.add("ok");
+  if(pilih){ if(+pilih.value===q[2]){benar++;} else {opts[+pilih.value].classList.add("bad");} }
+ });
+ document.getElementById("app").classList.add("show");
+ hasil.style.display="block";
+ hasil.innerHTML="Benar: <b>"+benar+"</b> dari 30. Skor pilihan ganda: <b>"+(benar*2)+"</b>/60. Skor esai (maks. 40) dinilai guru memakai pedoman jawaban di bawah tiap soal esai.";
+ hasil.scrollIntoView({behavior:"smooth",block:"nearest"});
+ return benar;
+}
+document.getElementById("cek").onclick=periksa;
+document.getElementById("reset").onclick=function(){
+ document.querySelectorAll("input[type=radio]").forEach(function(r){r.checked=false;});
+ document.querySelectorAll("textarea").forEach(function(t){t.value="";});
+ document.querySelectorAll(".opt").forEach(function(o){o.classList.remove("ok","bad");});
+ document.getElementById("app").classList.remove("show");
+ hasil.style.display="none";
+ window.scrollTo({top:0,behavior:"smooth"});
+};
+document.getElementById("print").onclick=function(){
+ var b=periksa(),pgs=b*2,n=document.getElementById("nesai").value;
+ var nama=document.getElementById("nama").value||"-",kelas=document.getElementById("kelas").value||"-";
+ var tgl=new Date().toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"});
+ var total=n!==""?(pgs+Number(n)):"Menunggu nilai esai";
+ document.getElementById("tabel").innerHTML=
+  "<tr><td>Nama</td><td>"+nama.replace(/</g,"&lt;")+"</td></tr>"+
+  "<tr><td>Kelas</td><td>"+kelas.replace(/</g,"&lt;")+"</td></tr>"+
+  "<tr><td>Tanggal</td><td>"+tgl+"</td></tr>"+
+  "<tr><td>Jawaban benar (PG)</td><td>"+b+" dari 30</td></tr>"+
+  "<tr><td>Skor pilihan ganda</td><td>"+pgs+" / 60</td></tr>"+
+  "<tr><td>Skor esai</td><td>"+(n!==""?n:"Belum dinilai")+" / 40</td></tr>"+
+  '<tr class="total"><td>Nilai akhir</td><td>'+total+(n!==""?" / 100":"")+"</td></tr>";
+ window.print();
+};
+</script>
+</body>
+</html>
